@@ -2,7 +2,6 @@ package com.example.firestoreapp.data.firestoredatabase
 
 import com.example.firestoreapp.data.FireStoreDataSource
 import com.example.firestoreapp.data.firestoredatabase.model.FireStoreData
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +23,7 @@ class FireStoreDataSourceImpl(
     override suspend fun saveData(data: FireStoreData) {
         withContext(Dispatchers.IO) {
             val transferData = hashMapOf(
-                "date" to Timestamp(data.date.time),
+                "date" to data.date.timeInMillis,
                 "pressure" to data.pressure,
                 "pulse" to data.pulse.toString()
             )

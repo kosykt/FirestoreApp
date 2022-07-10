@@ -58,12 +58,12 @@ class PulseAndPressureViewModel : ViewModel() {
                     is UseCaseResponse.Success<*> -> {
                         val data = (response.data as QuerySnapshot)
                         val listData: List<DomainData> = data.documents.map { document ->
-                            val date: Timestamp = document.data?.get("date") as Timestamp
+                            val date: Long = document.data?.get("date") as Long
                             val pressure: String = document.data?.get("pressure") as String
                             val pulse: String = document.data?.get("pulse") as String
                             DomainData(
                                 date = GregorianCalendar().also { calendar ->
-                                    calendar.time = date.toDate()
+                                    calendar.timeInMillis = date
                                 },
                                 pressure = pressure,
                                 pulse = pulse.toInt()

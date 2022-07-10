@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
-                app:layout_constraintEnd_toStartOf="@+id/item_pulse_text_view"
-                app:layout_constraintStart_toEndOf="@id/item_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="120/70" />
 
