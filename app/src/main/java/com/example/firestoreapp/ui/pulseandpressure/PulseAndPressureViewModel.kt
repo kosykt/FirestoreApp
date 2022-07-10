@@ -10,14 +10,16 @@ import com.example.firestoreapp.domain.SaveUseCase
 import com.example.firestoreapp.domain.model.DomainData
 import com.example.firestoreapp.domain.model.UseCaseResponse
 import com.example.firestoreapp.ui.AppState
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import java.util.*
 
 private const val COROUTINE_EXCEPTION_HANDLER = "COROUTINE_EXCEPTION_HANDLER"
 
@@ -43,19 +45,31 @@ class PulseAndPressureViewModel : ViewModel() {
         baseViewModelScope.launch {
             saveUseCase.execute(model)
         }
+        getData()
     }
 
     fun getData() {
         baseViewModelScope.launch {
             try {
-                getAllUseCase.execute().collectLatest { response ->
-                    when (response) {
-                        is UseCaseResponse.Error -> {
-                            mutableStateFlow.value = AppState.Error(response.message)
+                when (val response = getAllUseCase.execute()) {
+                    is UseCaseResponse.Error -> {
+                        mutableStateFlow.value = AppState.Error(response.message)
+                    }
+                    is UseCaseResponse.Success<*> -> {
+                        val data = (response.data as QuerySnapshot)
+                        val listData: List<DomainData> = data.documents.map { document ->
+                            val date: Timestamp = document.data?.get("date") as Timestamp
+                            val pressure: String = document.data?.get("pressure") as String
+                            val pulse: String = document.data?.get("pulse") as String
+                            DomainData(
+                                date = GregorianCalendar().also { calendar ->
+                                    calendar.time = date.toDate()
+                                },
+                                pressure = pressure,
+                                pulse = pulse.toInt()
+                            )
                         }
-                        is UseCaseResponse.Success<*> -> {
-                            mutableStateFlow.value = AppState.Success((response.data))
-                        }
+                        mutableStateFlow.value = AppState.Success(listData)
                     }
                 }
             } catch (e: Exception) {

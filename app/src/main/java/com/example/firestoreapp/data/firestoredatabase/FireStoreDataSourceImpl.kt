@@ -4,66 +4,32 @@ import com.example.firestoreapp.data.FireStoreDataSource
 import com.example.firestoreapp.data.firestoredatabase.model.FireStoreData
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class FireStoreDataSourceImpl(
     private val db: FirebaseFirestore,
 ) : FireStoreDataSource {
 
-    override fun getAllData(): Flow<List<FireStoreData>> {
-        db.collection("Data")
-            .get()
-            .addOnSuccessListener { result ->
-                result.documents.map { document ->
-                    val date: Timestamp = document.data?.get("date") as Timestamp
-                    val pressure: String = document.data?.get("pressure") as String
-                    val pulse: String = document.data?.get("pulse") as String
-                    FireStoreData(
-                        date = GregorianCalendar().also { calendar ->
-                            calendar.time = date.toDate()
-                        },
-                        pressure = pressure,
-                        pulse = pulse.toInt()
-                    )
-                }
-            }
-        return flow { emit(listData) }.flowOn(Dispatchers.IO)
+    override suspend fun getAllData(): QuerySnapshot? {
+        return withContext(Dispatchers.IO) {
+            db.collection("Data")
+                .get()
+                .await()
+        }
     }
 
     override suspend fun saveData(data: FireStoreData) {
-        withContext(Dispatchers.IO) { listData.add(data) }
+        withContext(Dispatchers.IO) {
+            val transferData = hashMapOf(
+                "date" to Timestamp(data.date.time),
+                "pressure" to data.pressure,
+                "pulse" to data.pulse.toString()
+            )
+            db.collection("Data")
+                .add(transferData)
+        }
     }
-
-    private val listData = mutableListOf<FireStoreData>(
-        FireStoreData(
-            date = GregorianCalendar(2022, 0, 1, 12, 0),
-            pressure = "120/90",
-            pulse = 80
-        ),
-        FireStoreData(
-            date = GregorianCalendar(2022, 0, 1, 12, 10),
-            pressure = "120/90",
-            pulse = 80
-        ),
-        FireStoreData(
-            date = GregorianCalendar(2022, 0, 1, 12, 20),
-            pressure = "120/90",
-            pulse = 80
-        ),
-        FireStoreData(
-            date = GregorianCalendar(2022, 0, 1, 12, 30),
-            pressure = "120/90",
-            pulse = 80
-        ),
-        FireStoreData(
-            date = GregorianCalendar(2022, 1, 1, 12, 30),
-            pressure = "120/90",
-            pulse = 80
-        ),
-    )
 }
