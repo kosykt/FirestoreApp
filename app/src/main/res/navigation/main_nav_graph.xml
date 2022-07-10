@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/pulseAndPressureFragment">
+
+    <fragment
+        android:id="@+id/pulseAndPressureFragment"
+        android:name="com.example.firestoreapp.ui.pulseandpressure.PulseAndPressureFragment"
+        android:label="pulseAndPressureFragment"
+        tools:layout="@layout/fragment_pulse_and_pressure" />
+
+</navigation>
