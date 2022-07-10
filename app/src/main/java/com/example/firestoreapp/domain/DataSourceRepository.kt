@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface DataSourceRepository {
 
-    suspend fun getAllData(): Flow<UseCaseResponse>
+    fun getAllData(): Flow<UseCaseResponse>
     suspend fun saveData(data: DomainData)
 }

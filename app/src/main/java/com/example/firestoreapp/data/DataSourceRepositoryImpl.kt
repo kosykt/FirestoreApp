@@ -5,14 +5,16 @@ import com.example.firestoreapp.domain.model.DomainData
 import com.example.firestoreapp.domain.model.UseCaseResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class DataSourceRepositoryImpl(
-    private val fireStoreDataSource: FireStoreDataSource
+    private val fireStoreDataSource: FireStoreDataSource,
 ) : DataSourceRepository {
-    override suspend fun getAllData(): Flow<UseCaseResponse> {
+    override fun getAllData(): Flow<UseCaseResponse> {
         return try {
-            val data: List<DomainData> = fireStoreDataSource.getAllData().toListDomainData()
-            flow { emit(UseCaseResponse.Success(data)) }
+            fireStoreDataSource.getAllData().map {
+                UseCaseResponse.Success(it.toListDomainData())
+            }
         } catch (e: Exception) {
             flow { emit(UseCaseResponse.Error(e.message.toString())) }
         }

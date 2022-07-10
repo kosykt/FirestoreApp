@@ -1,15 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:id="@+id/bottom_sheet_container_date"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:visibility="visible"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <CalendarView
-        android:id="@+id/calendarView"
+    <TextView
+        android:id="@+id/date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="DATE : "
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@id/day"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/day" />
+
+    <EditText
+        android:id="@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="DAY"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/date_label"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="MONTH"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/day"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="YEAR"
+        android:inputType="number"
+        android:maxLength="4"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/month"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TIME : "
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@id/hour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/hour" />
+
+    <EditText
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="HOUR"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/time_label"
+        app:layout_constraintTop_toBottomOf="@id/day" />
+
+    <EditText
+        android:id="@+id/minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="MINUTE"
+        android:inputType="number"
+        android:maxEms="62"
+        android:maxLength="2"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/hour"
+        app:layout_constraintTop_toBottomOf="@id/day" />
+
+    <TextView
+        android:id="@+id/pressure_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRESSURE : "
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pressure_s"
+        app:layout_constraintBottom_toBottomOf="@id/pressure_s"/>
+
+    <EditText
+        android:id="@+id/pressure_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="SBP"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/pressure_label"
+        app:layout_constraintTop_toBottomOf="@id/hour" />
+
+    <TextView
+        android:id="@+id/pressure_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/pressure_s"
+        app:layout_constraintTop_toTopOf="@id/pressure_s"
+        app:layout_constraintBottom_toBottomOf="@id/pressure_s"/>
+
+    <EditText
+        android:id="@+id/pressure_d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="DBP"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/pressure_slash"
+        app:layout_constraintTop_toBottomOf="@id/hour" />
+
+    <TextView
+        android:id="@+id/pulse_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PULSE : "
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pulse"
+        app:layout_constraintBottom_toBottomOf="@id/pulse"/>
+
+    <EditText
+        android:id="@+id/pulse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="PULSE"
+        android:inputType="number"
+        android:maxLength="3"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toEndOf="@id/pulse_label"
+        app:layout_constraintTop_toBottomOf="@id/pressure_label" />
+
+    <Button
+        android:id="@+id/save_data"
+        android:text="SAVE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pulse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

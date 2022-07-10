@@ -3,13 +3,17 @@ package com.example.firestoreapp.data.firestoredatabase
 import com.example.firestoreapp.data.FireStoreDataSource
 import com.example.firestoreapp.data.firestoredatabase.model.FireStoreData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.util.*
 
 class FireStoreDataSourceImpl : FireStoreDataSource {
 
-    override suspend fun getAllData(): List<FireStoreData> {
-        return withContext(Dispatchers.IO) { listData }
+    override fun getAllData(): Flow<List<FireStoreData>> {
+        return flow { emit(listData) }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun saveData(data: FireStoreData) {
