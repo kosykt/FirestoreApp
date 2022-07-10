@@ -10,6 +10,9 @@ import com.example.firestoreapp.domain.SaveUseCase
 import com.example.firestoreapp.domain.model.DomainData
 import com.example.firestoreapp.domain.model.UseCaseResponse
 import com.example.firestoreapp.ui.AppState
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +23,8 @@ private const val COROUTINE_EXCEPTION_HANDLER = "COROUTINE_EXCEPTION_HANDLER"
 
 class PulseAndPressureViewModel : ViewModel() {
 
-    private val fireStoreDataSource = FireStoreDataSourceImpl()
+    private val db: FirebaseFirestore = Firebase.firestore
+    private val fireStoreDataSource = FireStoreDataSourceImpl(db)
     private val repository = DataSourceRepositoryImpl(fireStoreDataSource)
     private val getAllUseCase = GetAllUseCase(repository)
     private val saveUseCase = SaveUseCase(repository)

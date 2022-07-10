@@ -2,17 +2,36 @@ package com.example.firestoreapp.data.firestoredatabase
 
 import com.example.firestoreapp.data.FireStoreDataSource
 import com.example.firestoreapp.data.firestoredatabase.model.FireStoreData
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class FireStoreDataSourceImpl : FireStoreDataSource {
+class FireStoreDataSourceImpl(
+    private val db: FirebaseFirestore,
+) : FireStoreDataSource {
 
     override fun getAllData(): Flow<List<FireStoreData>> {
+        db.collection("Data")
+            .get()
+            .addOnSuccessListener { result ->
+                result.documents.map { document ->
+                    val date: Timestamp = document.data?.get("date") as Timestamp
+                    val pressure: String = document.data?.get("pressure") as String
+                    val pulse: String = document.data?.get("pulse") as String
+                    FireStoreData(
+                        date = GregorianCalendar().also { calendar ->
+                            calendar.time = date.toDate()
+                        },
+                        pressure = pressure,
+                        pulse = pulse.toInt()
+                    )
+                }
+            }
         return flow { emit(listData) }.flowOn(Dispatchers.IO)
     }
 
