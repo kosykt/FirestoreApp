@@ -67,7 +67,7 @@ class PulseAndPressureViewModel : ViewModel() {
                                 pressure = pressure,
                                 pulse = pulse.toInt()
                             )
-                        }
+                        }.sortedBy{ it.date.timeInMillis }
                         mutableStateFlow.value = AppState.Success(listData)
                     }
                 }
