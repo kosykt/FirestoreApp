@@ -48,21 +48,48 @@ class PulseAndPressureFragment : Fragment() {
 
     private fun initSaveButton() {
         binding.bottomSheetDatePickerInclude.saveData.setOnClickListener {
-            val day = binding.bottomSheetDatePickerInclude.day.text.toString().toInt()
-            val month = binding.bottomSheetDatePickerInclude.month.text.toString().toInt()
-            val year = binding.bottomSheetDatePickerInclude.year.text.toString().toInt()
-            val hour = binding.bottomSheetDatePickerInclude.hour.text.toString().toInt()
-            val minute = binding.bottomSheetDatePickerInclude.minute.text.toString().toInt()
-            val pressureS = binding.bottomSheetDatePickerInclude.pressureS.text.toString()
-            val pressureD = binding.bottomSheetDatePickerInclude.pressureD.text.toString()
-            val pulse = binding.bottomSheetDatePickerInclude.pulse.text.toString().toInt()
-            viewModel.saveData(
-                DomainData(
-                    date = GregorianCalendar(year, month, day, hour, minute),
-                    pressure = "$pressureS/$pressureD",
-                    pulse = pulse
-                )
-            )
+            try {
+                val day = binding.bottomSheetDatePickerInclude.day.text.toString().toInt()
+                val month = binding.bottomSheetDatePickerInclude.month.text.toString().toInt()
+                val year = binding.bottomSheetDatePickerInclude.year.text.toString().toInt()
+                val hour = binding.bottomSheetDatePickerInclude.hour.text.toString().toInt()
+                val minute = binding.bottomSheetDatePickerInclude.minute.text.toString().toInt()
+                val pressureS = binding.bottomSheetDatePickerInclude.pressureS.text.toString()
+                val pressureD = binding.bottomSheetDatePickerInclude.pressureD.text.toString()
+                val pulse = binding.bottomSheetDatePickerInclude.pulse.text.toString().toInt()
+                if (checkDate(day, month, year, hour, minute) && checkPressure(pressureS, pressureD)) {
+                    viewModel.saveData(
+                        DomainData(
+                            date = GregorianCalendar(year, month, day, hour, minute),
+                            pressure = "$pressureS/$pressureD",
+                            pulse = pulse
+                        )
+                    )
+                }
+            }catch (e: Exception){
+                Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun checkDate(day: Int, month: Int, year: Int, hour: Int, minute: Int): Boolean {
+        return try {
+            GregorianCalendar(year, month, day, hour, minute)
+            true
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+            false
+        }
+    }
+
+    private fun checkPressure(pressureS: String, pressureD: String): Boolean {
+        return if (pressureS >= pressureD) {
+            true
+        } else {
+            Toast.makeText(context,
+                "systolic pressure cannot be less than diastolic",
+                Toast.LENGTH_SHORT).show()
+            false
         }
     }
 

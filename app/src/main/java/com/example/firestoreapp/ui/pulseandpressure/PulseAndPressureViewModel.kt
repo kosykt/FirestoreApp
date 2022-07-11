@@ -10,7 +10,6 @@ import com.example.firestoreapp.domain.SaveUseCase
 import com.example.firestoreapp.domain.model.DomainData
 import com.example.firestoreapp.domain.model.UseCaseResponse
 import com.example.firestoreapp.ui.AppState
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
